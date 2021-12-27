@@ -13,12 +13,20 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-    
+
     - name: OS Packages 
       run: |
         sudo apt-get update --fix-missing && sudo apt-get -y install \
         git build-essential zlib1g zlib1g-dev wget zip unzip \
         mingw-w64 binutils-mingw-w64 g++-mingw-w64 gcc-multilib
+
+    - name: Minisign
+      run: |
+        wget https://github.com/aead/minisign/releases/download/v0.2.0/minisign-linux-amd64.tar.gz
+        tar xvf minisign-linux-amd64.tar.gz
+        cp ./minisign-linux-amd64/minisign /usr/bin
+        rm -rf ./minisign-*
+        rm -f minisign-linux-amd64.tar.gz
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
@@ -36,6 +44,12 @@ jobs:
         cp LICENSE ./compiled/LICENSE
         cd compiled
         tar -czvf ../nanodump.tar.gz .
+      
+    - name: Sign Binaries
+      run: |
+        touch /tmp/minisign.key && chmod 600 /tmp/minisign.key
+        echo "$MINISIGN_PRIVATE_KEY" > minisign.key
+        /usr/bin/minisign -s /tmp/minisign.key -S -m nanodump.tar.gz -t nanodump -x nanodump.minisig
 
     - name: "Publish Release"
       uses: "marvinpinto/action-automatic-releases@latest"
@@ -43,4 +57,5 @@ jobs:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         prerelease: false
         files: |
+          ./nanodump.minisig
           ./nanodump.tar.gz
