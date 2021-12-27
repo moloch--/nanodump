@@ -30,3 +30,16 @@ jobs:
       run: |
         make clean
         make
+        rm -f ./compiled/.gitkeep
+        cp extension.json ./compiled/extension.json
+        cp LICENSE ./compiled/LICENSE
+        cd compiled
+        tar -czvf ../nanodump.tar.gz .
+
+    - name: "Publish Release"
+      uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        prerelease: false
+        files: |
+          ./nanodump.tar.gz
