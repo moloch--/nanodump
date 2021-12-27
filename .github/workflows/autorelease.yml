@@ -32,7 +32,7 @@ jobs:
         make
         rm -f ./compiled/.gitkeep
         VERSION=$(git describe --tags --abbrev=0)
-        cat extension.json | jq '.version |= "$VERSION"' > ./compiled/extension.json
+        cat extension.json | jq ".version |= \"$VERSION\"" > ./compiled/extension.json
         cp LICENSE ./compiled/LICENSE
         cd compiled
         tar -czvf ../nanodump.tar.gz .
