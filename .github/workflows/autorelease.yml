@@ -26,7 +26,7 @@ jobs:
         cd $MINISIGN_TMP
         wget https://github.com/aead/minisign/releases/download/v0.2.0/minisign-linux-amd64.tar.gz
         tar xvf minisign-linux-amd64.tar.gz
-        cp ./minisign /usr/bin
+        mv ./minisign ~/minisign
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
@@ -34,7 +34,7 @@ jobs:
     - name: Git Fetch Tags
       run: git fetch --prune --unshallow --tags -f
 
-    - name: Build Binaries
+    - name: Build Package
       run: |
         make clean
         make
@@ -45,11 +45,12 @@ jobs:
         cd compiled
         tar -czvf ../nanodump.tar.gz .
       
-    - name: Sign Binaries
+    - name: Sign Package
       run: |
-        touch /tmp/minisign.key && chmod 600 /tmp/minisign.key
-        echo "$MINISIGN_PRIVATE_KEY" > minisign.key
-        /usr/bin/minisign -s /tmp/minisign.key -S -m nanodump.tar.gz -t nanodump -x nanodump.minisig
+        touch ~/minisign.key && chmod 600 ~/minisign.key
+        echo "$MINISIGN_PRIVATE_KEY" > ~/minisign.key
+        MANIFEST=$(cat extension.json | base64)
+        ~/minisign -s ~/minisign.key -S -m ./nanodump.tar.gz -t $MANIFEST -x nanodump.minisig
 
     - name: "Publish Release"
       uses: "marvinpinto/action-automatic-releases@latest"
