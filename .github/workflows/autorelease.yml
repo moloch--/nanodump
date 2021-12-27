@@ -49,7 +49,7 @@ jobs:
       run: |
         touch ~/minisign.key && chmod 600 ~/minisign.key
         echo -e "${{ secrets.MINISIGN_PRIVATE_KEY }}" > ~/minisign.key
-        MANIFEST=$(cat extension.json | base64 -w 0)
+        MANIFEST=$(cat ./compiled/extension.json | base64 -w 0)
         bash -c "echo \"\" | ~/minisign -s ~/minisign.key -S -m ./nanodump.tar.gz -t \"$MANIFEST\" -x nanodump.minisig"
 
     - name: "Publish Release"
