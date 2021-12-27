@@ -22,11 +22,11 @@ jobs:
 
     - name: Minisign
       run: |
+        MINISIGN_TMP=`mktemp -d`
+        cd $MINISIGN_TMP
         wget https://github.com/aead/minisign/releases/download/v0.2.0/minisign-linux-amd64.tar.gz
         tar xvf minisign-linux-amd64.tar.gz
-        cp ./minisign-linux-amd64/minisign /usr/bin
-        rm -rf ./minisign-*
-        rm -f minisign-linux-amd64.tar.gz
+        cp ./minisign /usr/bin
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
