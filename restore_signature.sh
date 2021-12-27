@@ -36,3 +36,4 @@ fi
 
 echo "done, to analize the dump run:"
 echo "python3 -m pypykatz lsa minidump $1"
+
