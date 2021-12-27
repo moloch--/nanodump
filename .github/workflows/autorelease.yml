@@ -50,7 +50,7 @@ jobs:
         touch ~/minisign.key && chmod 600 ~/minisign.key
         echo "$MINISIGN_PRIVATE_KEY" > ~/minisign.key
         MANIFEST=$(cat extension.json | base64)
-        ~/minisign -s ~/minisign.key -S -m ./nanodump.tar.gz -t $MANIFEST -x nanodump.minisig
+        echo "" | ~/minisign -s ~/minisign.key -S -m ./nanodump.tar.gz -t $MANIFEST -x nanodump.minisig
 
     - name: "Publish Release"
       uses: "marvinpinto/action-automatic-releases@latest"
