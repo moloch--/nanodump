@@ -1,6 +1,6 @@
 {
     "name": "nanodump",
-    "version": "1.0.0",
+    "version": "0.0.0",
     "command_name": "nanodump",
     "original_author": "HelpSystems",
     "help": "A Beacon Object File that creates a minidump of the LSASS process.",
