@@ -1,0 +1,45 @@
+{
+    "name": "nanodump",
+    "version": "0.0.0",
+    "command_name": "nanodump",
+    "extension_author": "moloch--",
+    "original_author": "HelpSystems",
+    "repo_url": "https://github.com/sliverarmory/nanodump",
+    "help": "A Beacon Object File that creates a minidump of the LSASS process.",
+    "depends_on": "coff-loader",
+    "entrypoint": "go",
+    "files": [
+        {
+            "os": "windows",
+            "arch": "amd64",
+            "path": "nanodump.x64.o"
+        }
+    ],
+    "arguments": [
+        {
+            "name": "pid",
+            "desc": "The PID of the process you want to dump.",
+            "type": "int",
+            "optional": false
+        },
+        {
+            "name": "dump-name",
+            "desc": "The name of the dump file.",
+            "type": "string",
+            "optional": false
+        },
+        {
+            "name": "write-file",
+            "desc": "1 = write file, 0 = fileless",
+            "type": "int",
+            "optional": false
+        },
+        {
+            "name": "signature",
+            "desc": "Signature used for evasion, PMDM = default",
+            "type": "string",
+            "optional": false
+        }
+    ]
+}
+
